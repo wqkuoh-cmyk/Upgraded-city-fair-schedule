@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Minecraft City Fair Schedule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+    }
+    .controls {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
+    select {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+    }
+    .card {
+      background: #0f172a;
+      border-radius: 18px;
+      padding: 18px;
+      margin: 14px auto;
+      max-width: 520px;
+      box-shadow: 0 0 15px #ff00ff, 0 0 25px #00ffff;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.03);
+    }
+    .city {
+      font-size: 22px;
+      font-weight: bold;
+      background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 8px rgba(255,255,255,0.7);
+    }
+    .details {
+      margin-top: 6px;
+      color: #e0e7ff;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #a5b4fc;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ff00ff, 0 0 20px #00ffff; }
+      to { text-shadow: 0 0 20px #ffff00, 0 0 40px #ff00ff; }
+    }
+  </style>
+</head>
+<body>
+  <!-- START SCREEN -->
+  <div id="startScreen" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; background:radial-gradient(circle at top, #1e0033, #000);">
+    <h1 style="font-size:48px; text-align:center; color:#fff; text-shadow:0 0 10px #ff00ff, 0 0 20px #00ffff, 0 0 40px #ffff00; animation: glow 2s infinite alternate;">
+      🌈 Steve's Fair 🌈
+    </h1>
+    <button onclick="startFair()" style="margin-top:30px; padding:16px 40px; font-size:24px; border:none; border-radius:20px; cursor:pointer; background:linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet); color:#000; box-shadow:0 0 20px #0ff;">
+      ▶ START
+    </button>
+  </div>
+
+  <!-- MAIN FAIR -->
+  <div id="mainFair" style="display:none;">
+    <h1 style="text-align:center; font-size:42px; background:linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet); -webkit-background-clip:text; color:transparent; text-shadow:0 0 10px rgba(255,255,255,0.6);">
+      🎡 Minecraft City Fair
+    </h1>🎡 Minecraft City Fair</h1>
+  <p>Weekends only • 11:00 AM – 12:00 AM • May – September</p>
+
+  <div class="controls">
+    <select id="cityFilter" onchange="filterCity()">
+      <option value="all">All Cities</option>
+      <option value="Rhodes City">Rhodes City</option>
+      <option value="Aneleigh City">Aneleigh City</option>
+      <option value="Grand Garnetiere">Grand Garnetiere</option>
+      <option value="Marrexon">Marrexon</option>
+      <option value="Marrexson Perimeter">Marrexson Perimeter</option>
+      <option value="OG City">OG City</option>
+      <option value="Xenon">Xenon</option>
+      <option value="Foot Town">Foot Town</option>
+    </select>
+  </div>
+
+  <div id="schedule"></div>
+
+  <footer>
+    Built for a Minecraft Fair • Hosted on GitHub Pages
+  </footer>
+  </div>
+
+  <script>
+    function startFair() {
+      document.getElementById('startScreen').style.display = 'none';
+      document.getElementById('mainFair').style.display = 'block';
+    }
+
+    const fairs = [
+      { name: "Rhodes City", info: "A classic Minecraft fair city with rides, games, and community events." },
+      { name: "Aneleigh City", info: "A Christian fair celebrating Christianity with themed events and community gatherings." },
+      { name: "Grand Garnetiere", info: "A grand fair city known for decorations, lights, and large attractions." },
+      { name: "Marrexon", info: "A special fair celebrating my friends and our memories together." },
+      { name: "Marrexson Perimeter", info: "A fair celebrating my class, teamwork, and school community." },
+      { name: "OG City", info: "Celebrates being the very first city — the origin of it all." },
+      { name: "Xenon", info: "A futuristic-style Minecraft city fair with a modern vibe." },
+      { name: "Foot Town", info: "A silly and fun fair city — Foot Town is full of feet!" },
+      { name: "Rhodes City", info: "A classic Minecraft fair city with rides, games, and community events." },
+      { name: "Aneleigh City", info: "A Christian fair celebrating Christianity with themed events and community gatherings." },
+      { name: "Grand Garnetiere", info: "A grand fair city known for decorations, lights, and large attractions." },
+      { name: "Marrexon", info: "A special fair celebrating my friends and our memories together." },
+      { name: "Marrexson Perimeter", info: "A fair celebrating my class, teamwork, and school community." },
+      { name: "OG City", info: "Celebrates being the very first city — the origin of it all." },
+      { name: "Xenon", info: "A futuristic-style Minecraft city fair with a modern vibe." },
+      { name: "Foot Town", info: "A silly and fun fair city — Foot Town is full of feet!" }
+    ];
+
+    const scheduleDiv = document.getElementById("schedule");
+
+    function render(list) {
+      scheduleDiv.innerHTML = "";
+      list.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.style.cursor = "pointer";
+        card.innerHTML = `
+          <div class="city">${item.name}</div>
+          <div class="details">Weekends • May–September</div>
+          <div class="details">⏰ 11:00 AM – 12:00 AM</div>
+          <div class="details" style="display:none; margin-top:10px;">${item.info}</div>
+        `;
+        card.onclick = () => {
+          const info = card.querySelectorAll('.details')[2];
+          info.style.display = info.style.display === 'none' ? 'block' : 'none';
+        };
+        scheduleDiv.appendChild(card);
+      });
+    }
+
+    function filterCity() {
+      const value = document.getElementById("cityFilter").value;
+      if (value === "all") render(fairs);
+      else render(fairs.filter(c => c.name === value));
+    }
+
+    render(fairs);
+      } else {
+        render(fairs.filter(c => c.name === value));
+      }
+    } else {
+        render(fairs.filter(c => c === value));
+      }
+    }
+
+    render(fairs);
+  </script>
+</body>
+</html>
